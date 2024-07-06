@@ -2,7 +2,9 @@ package main
 
 import (
 	server "github.com/end1essrage/dndhelper-spellbook"
+	client "github.com/end1essrage/dndhelper-spellbook/pkg/client"
 	handler "github.com/end1essrage/dndhelper-spellbook/pkg/handler"
+	"github.com/end1essrage/dndhelper-spellbook/pkg/service"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -19,7 +21,10 @@ func main() {
 		logrus.Fatalf("error while reading environment %s", err.Error())
 	}
 
-	handlers := handler.NewHandler()
+	//прокинуть из конфига
+	client := client.NewClient("host")
+	service := service.NewService(client)
+	handlers := handler.NewHandler(service)
 
 	srv := new(server.Server)
 
