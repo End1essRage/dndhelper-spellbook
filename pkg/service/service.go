@@ -5,7 +5,7 @@ import (
 )
 
 type SpellBook interface {
-	GetSpellInfo(spellName string) (string, error)
+	GetSpellInfo(spellName string) (client.Spell, error)
 }
 
 type Service struct {

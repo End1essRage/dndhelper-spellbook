@@ -1,6 +1,7 @@
 package client
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -19,29 +20,34 @@ type Client struct {
 func NewClient(host string) *Client {
 	return &Client{
 		host:     host,
-		basePath: "",
+		basePath: "/api/spells",
 		client:   http.Client{},
 	}
 }
 
-func (c *Client) GetSpellInfo(spellName string) (string, error) {
+func (c *Client) GetSpellInfo(spellName string) (Spell, error) {
 	logrus.Info("client - GetSpellInfo")
-	return "", nil
+	resp, err := c.sendRequest(spellName)
+
+	var spell Spell
+	err = json.Unmarshal(resp, &spell)
+	logrus.Info("spell damage is: ", spell.Damage)
+
+	return spell, err
 }
 
-func (c *Client) sendRequest(method string, query url.Values) ([]byte, error) {
+func (c *Client) sendRequest(spellname string) ([]byte, error) {
 	u := url.URL{
 		Scheme: "https",
 		Host:   c.host,
-		Path:   path.Join(c.basePath, method),
+		Path:   path.Join(c.basePath, spellname),
 	}
 
 	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+
 	if err != nil {
 		return nil, fmt.Errorf("can't do request: %w", err)
 	}
-
-	req.URL.RawQuery = query.Encode()
 
 	resp, err := c.client.Do(req)
 	if err != nil {

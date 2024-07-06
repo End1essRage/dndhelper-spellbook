@@ -22,7 +22,7 @@ func main() {
 	}
 
 	//прокинуть из конфига
-	client := client.NewClient("host")
+	client := client.NewClient("www.dnd5eapi.co")
 	service := service.NewService(client)
 	handlers := handler.NewHandler(service)
 

@@ -6,7 +6,6 @@ import (
 )
 
 type SpellBookService struct {
-	//тут нужен клиент для dnd5api
 	client *client.Client
 }
 
@@ -14,10 +13,10 @@ func NewSpellBookService(client *client.Client) *SpellBookService {
 	return &SpellBookService{client: client}
 }
 
-func (s *SpellBookService) GetSpellInfo(spellName string) (string, error) {
+func (s *SpellBookService) GetSpellInfo(spellName string) (client.Spell, error) {
 	//add log
 	logrus.Info("SpellBookService - GetSpellInfo")
-	s.client.GetSpellInfo(spellName)
+	spell, err := s.client.GetSpellInfo(spellName)
 
-	return "GetSpellInfo", nil
+	return spell, err
 }

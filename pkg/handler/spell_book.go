@@ -12,7 +12,10 @@ func (h *Handler) GetSpellInfo(c *gin.Context) {
 	//Обработать входные данные
 	spellName := c.Request.URL.Query().Get("name")
 	//дернуть сервис
-	h.services.SpellBook.GetSpellInfo(spellName)
+	spell, err := h.services.SpellBook.GetSpellInfo(spellName)
+	if err != nil {
+		logrus.Error("error in GetSpellInfo", err.Error())
+	}
 	//отправить ответ
-	c.JSON(http.StatusOK, spellName)
+	c.JSON(http.StatusOK, spell)
 }
