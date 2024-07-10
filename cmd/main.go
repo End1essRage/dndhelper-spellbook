@@ -18,7 +18,8 @@ func main() {
 	}
 
 	if err := godotenv.Load(); err != nil {
-		logrus.Fatalf("error while reading environment %s", err.Error())
+		//non fatal
+		logrus.Error("error while reading environment %s", err.Error())
 	}
 
 	//прокинуть из конфига
